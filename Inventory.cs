@@ -7,9 +7,23 @@ using System.Threading.Tasks;
 namespace InventoryManagementSystem
 {
 
+
     public class Inventory
     {
         private List<Product> products = new List<Product>();
+
+
+        private Product FindProductByName(string name)
+        {
+            var product = products.FirstOrDefault(p => p.ProductName.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+                if (product == null)
+                {
+                    Console.WriteLine("Product not found.");
+                }
+
+            return product;
+        }
 
         public void AddProduct()
         {
@@ -42,5 +56,19 @@ namespace InventoryManagementSystem
             }
 
         }
+
+        public void SearchProduct()
+        {
+            Console.Write("Enter product name to search: ");
+            string name = Console.ReadLine();
+
+            var product = FindProductByName(name);
+            if (product != null)
+            {
+                Console.WriteLine("Product found:");
+                Console.WriteLine(product);
+            }
+        }
+
     }
 }
