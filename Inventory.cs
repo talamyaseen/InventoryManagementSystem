@@ -10,6 +10,17 @@ namespace InventoryManagementSystem
     public class Inventory
     {
         private List<Product> products = new List<Product>();
+        private Product FindProductByName(string name)
+        {
+            var product = products.FirstOrDefault(p => p.ProductName.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+            if (product == null)
+            {
+                Console.WriteLine("Product not found.");
+            }
+
+            return product;
+        }
 
         public void AddProduct()
         {
@@ -42,5 +53,47 @@ namespace InventoryManagementSystem
             }
 
         }
+
+        public void EditProduct()
+        {
+            Console.Write("Enter product name to edit: ");
+            string name = Console.ReadLine();
+
+            var product = FindProductByName(name);
+            if (product != null)
+            {
+                Console.Write("New name (leave empty to keep current): ");
+                string newName = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(newName))
+                    product.ProductName = newName;
+
+                Console.Write("New price (leave empty to keep current): ");
+                string priceInput = Console.ReadLine();
+                if (double.TryParse(priceInput, out double newPrice))
+                    product.ProductPrice = newPrice;
+
+                Console.Write("New quantity (leave empty to keep current): ");
+                string quantityInput = Console.ReadLine();
+                if (int.TryParse(quantityInput, out int newQuantity))
+                    product.ProductQuantity = newQuantity;
+
+                Console.WriteLine("Product updated successfully");
+            }
+        }
+
+        public void SearchProduct()
+        {
+            Console.Write("Enter product name to search: ");
+            string name = Console.ReadLine();
+
+            var product = FindProductByName(name);
+            if (product != null)
+            {
+                Console.WriteLine("Product found:");
+                Console.WriteLine(product);
+            }
+        }
+
+
     }
 }
