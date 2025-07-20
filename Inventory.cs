@@ -70,5 +70,19 @@ namespace InventoryManagementSystem
             }
         }
 
+        public void DeleteProduct()
+        {
+            Console.Write("Enter product name to delete: ");
+            string name = Console.ReadLine();
+
+            var product = FindProductByName(name);
+            if (product != null)
+            {
+                products.Remove(product);
+                Console.WriteLine("Product deleted successfully");
+            }
+
+            
+        }
     }
 }
