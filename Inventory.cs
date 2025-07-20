@@ -14,8 +14,6 @@ namespace InventoryManagementSystem
         public void AddProduct()
         {
         
-            
-
             Console.Write("Enter product name: ");
             string name = Console.ReadLine();
 
@@ -27,6 +25,22 @@ namespace InventoryManagementSystem
 
             products.Add(new Product(name, price, quantity));
             Console.WriteLine("Product added successfully");
+        }
+
+        public void ViewProducts()
+        {
+            if (products.Count == 0)
+            {
+                Console.WriteLine("Inventory is empty");
+                return;
+            }
+
+            Console.WriteLine("All Products:");
+            for (int i = 0; i < products.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {products[i]}");
+            }
+
         }
     }
 }
