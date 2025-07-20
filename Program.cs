@@ -15,6 +15,7 @@ namespace InventoryManagementSystem
                 Console.WriteLine("\nInventory Management System");
                 Console.WriteLine("1. Add a product");
                 Console.WriteLine("2. View all products");
+                Console.WriteLine("3. Edit a product");
                 Console.WriteLine("4. Delete a product");
                 Console.WriteLine("5. Search for a product");
                 Console.WriteLine("6. Exit");
@@ -29,6 +30,9 @@ namespace InventoryManagementSystem
                         break;
                     case "2":
                         inventory.ViewProducts();
+                        break;
+                    case "3":
+                        inventory.EditProduct();
                         break;
                     case "4":
                         inventory.DeleteProduct();
