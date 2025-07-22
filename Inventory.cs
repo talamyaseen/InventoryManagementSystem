@@ -13,8 +13,13 @@ namespace InventoryManagementSystem
         private List<Product> products = new List<Product>();
      
 
+
         private Product FindProductByName(string name)
         {
+            /* foreach (Product p in products)
+                if (string.Equals(p.ProductName, name, StringComparison.OrdinalIgnoreCase))
+                   return p; 
+               return null;*/
             var product = products.FirstOrDefault(p => p.ProductName.Equals(name, StringComparison.OrdinalIgnoreCase));
 
                 if (product == null)
