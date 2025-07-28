@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem
 {
-
-
     public class Inventory
     {
         private List<Product> products = new List<Product>();
