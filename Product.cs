@@ -9,10 +9,10 @@ namespace InventoryManagementSystem
     public class Product
     {
         public string ProductName { get; set; }
-        public double ProductPrice { get; set; }
+        public decimal ProductPrice { get; set; }  
         public int ProductQuantity { get; set; }
 
-        public Product(string name, double price, int quantity)
+        public Product(string name, decimal price, int quantity)
         {
             ProductName = name;
             ProductPrice = price;
@@ -24,5 +24,4 @@ namespace InventoryManagementSystem
             return $"Name: {ProductName}, Price: ${ProductPrice}, Quantity: {ProductQuantity}";
         }
     }
-
 }

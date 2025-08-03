@@ -4,7 +4,7 @@ namespace InventoryManagementSystem
 {
     public static class InputHelper
     {
-        public static double? PromptForValidDouble(string message, bool allowEmpty = false)
+        public static decimal? PromptForValidDecimal(string message, bool allowEmpty = false)
         {
             int attempts = 0;
 
@@ -16,7 +16,7 @@ namespace InventoryManagementSystem
                 if (allowEmpty && string.IsNullOrWhiteSpace(input))
                     return null;
 
-                if (double.TryParse(input, out double value))
+                if (decimal.TryParse(input, out decimal value))
                     return value;
 
                 Console.WriteLine("Invalid number. Try again.");
