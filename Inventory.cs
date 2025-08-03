@@ -1,63 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagementSystem
 {
     public class Inventory
     {
         private List<Product> products = new List<Product>();
-     
 
-
-        private Product FindProductByName(string name)
+        private Product? FindProductByName(string name)
         {
-            /* foreach (Product p in products)
-                if (string.Equals(p.ProductName, name, StringComparison.OrdinalIgnoreCase))
-                   return p; 
-               return null;*/
-            var product = products.FirstOrDefault(p => p.ProductName.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-                if (product == null)
-                {
-                    Console.WriteLine("Product not found.");
-                }
-
-            return product;
+            return products.FirstOrDefault(p => 
+                p.ProductName.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
         public void AddProduct()
         {
-        
             Console.Write("Enter product name: ");
             string name = Console.ReadLine();
 
-            Console.Write("Enter product price: ");
-            double price = double.Parse(Console.ReadLine());
-
-            Console.Write("Enter product quantity: ");
-            int quantity = int.Parse(Console.ReadLine());
-
-            products.Add(new Product(name, price, quantity));
-            Console.WriteLine("Product added successfully");
-        }
-
-        public void ViewProducts()
-        {
-            if (products.Count == 0)
+            var price = InputHelper.PromptForValidDouble("Enter product price: ");
+            if (price == null)
             {
-                Console.WriteLine("Inventory is empty");
+                Console.WriteLine("Invalid price");
                 return;
             }
 
-            Console.WriteLine("All Products:");
-            for (int i = 0; i < products.Count; i++)
+            var quantity = InputHelper.PromptForValidInt("Enter product quantity: ");
+            if (quantity == null)
             {
-                Console.WriteLine($"{i + 1}. {products[i]}");
+                Console.WriteLine("Invalid quantity");
+                return;
             }
 
+            products.Add(new Product(name, price.Value, quantity.Value));
+            Console.WriteLine("Product added successfully.");
         }
 
         public void EditProduct()
@@ -66,27 +43,27 @@ namespace InventoryManagementSystem
             string name = Console.ReadLine();
 
             var product = FindProductByName(name);
-            if (product != null)
+            if (product == null)
             {
-                Console.Write("New name (leave empty to keep current): ");
-                string newName = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(newName))
-                    product.ProductName = newName;
-
-                Console.Write("New price (leave empty to keep current): ");
-                string priceInput = Console.ReadLine();
-                if (double.TryParse(priceInput, out double newPrice))
-                    product.ProductPrice = newPrice;
-
-                Console.Write("New quantity (leave empty to keep current): ");
-                string quantityInput = Console.ReadLine();
-                if (int.TryParse(quantityInput, out int newQuantity))
-                    product.ProductQuantity = newQuantity;
-
-                Console.WriteLine("Product updated successfully");
+                Console.WriteLine("Product not found.");
+                return;
             }
-        }
 
+            Console.Write("New name (leave empty to keep current): ");
+            string newName = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(newName))
+                product.ProductName = newName;
+
+            var newPrice = InputHelper.PromptForValidDouble("New price (leave empty to keep current): ", allowEmpty: true);
+            if (newPrice != null)
+                product.ProductPrice = newPrice.Value;
+
+            var newQuantity = InputHelper.PromptForValidInt("New quantity (leave empty to keep current): ", allowEmpty: true);
+            if (newQuantity != null)
+                product.ProductQuantity = newQuantity.Value;
+
+            Console.WriteLine("Product updated successfully.");
+        }
 
         public void SearchProduct()
         {
@@ -94,11 +71,14 @@ namespace InventoryManagementSystem
             string name = Console.ReadLine();
 
             var product = FindProductByName(name);
-            if (product != null)
+            if (product == null)
             {
-                Console.WriteLine("Product found:");
-                Console.WriteLine(product);
+                Console.WriteLine("Product not found.");
+                return;
             }
+
+            Console.WriteLine("Product found:");
+            Console.WriteLine(product);
         }
 
         public void DeleteProduct()
@@ -107,13 +87,14 @@ namespace InventoryManagementSystem
             string name = Console.ReadLine();
 
             var product = FindProductByName(name);
-            if (product != null)
+            if (product == null)
             {
-                products.Remove(product);
-                Console.WriteLine("Product deleted successfully");
+                Console.WriteLine("Product not found.");
+                return;
             }
 
-            
+            products.Remove(product);
+            Console.WriteLine("Product deleted successfully.");
         }
     }
 }
