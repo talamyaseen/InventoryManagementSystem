@@ -21,7 +21,7 @@ namespace InventoryManagementSystem
                 Console.WriteLine("6. Exit");
                 Console.Write("Choose an option: ");
 
-                string choice = Console.ReadLine();
+                string? choice = Console.ReadLine();
 
                 switch (choice)
                 {

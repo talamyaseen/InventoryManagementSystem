@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// Inventory.cs
-using System;
-using System.Collections.Generic;
-
 namespace InventoryManagementSystem
 {
     public class Inventory
     {
-        
         private Dictionary<string, Product> products = new Dictionary<string, Product>(StringComparer.OrdinalIgnoreCase);
 
         private Product? FindProductByName(string name)
@@ -21,8 +16,12 @@ namespace InventoryManagementSystem
 
         public void AddProduct()
         {
-            Console.Write("Enter product name: ");
-            string name = Console.ReadLine();
+            var name = InputHelper.PromptForValidString("Enter product name: ");
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Invalid product name.");
+                return;
+            }
 
             if (products.ContainsKey(name))
             {
@@ -30,7 +29,7 @@ namespace InventoryManagementSystem
                 return;
             }
 
-            var price = InputHelper.PromptForValidDecimal("Enter product price: ");
+            var price = InputHelper.PromptForValidDecimal("Enter product price: ", allowEmpty: false, maxAttempts: 5);
             if (price == null)
             {
                 Console.WriteLine("Invalid price.");
@@ -50,8 +49,12 @@ namespace InventoryManagementSystem
 
         public void EditProduct()
         {
-            Console.Write("Enter product name to edit: ");
-            string name = Console.ReadLine();
+            var name = InputHelper.PromptForValidString("Enter product name to edit: ");
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Invalid product name.");
+                return;
+            }
 
             var product = FindProductByName(name);
             if (product == null)
@@ -60,8 +63,7 @@ namespace InventoryManagementSystem
                 return;
             }
 
-            Console.Write("New name (leave empty to keep current): ");
-            string newName = Console.ReadLine();
+            var newName = InputHelper.PromptForValidString("New name (leave empty to keep current): ", allowEmpty: true);
             if (!string.IsNullOrWhiteSpace(newName) && !newName.Equals(name, StringComparison.OrdinalIgnoreCase))
             {
                 if (products.ContainsKey(newName))
@@ -88,8 +90,12 @@ namespace InventoryManagementSystem
 
         public void SearchProduct()
         {
-            Console.Write("Enter product name to search: ");
-            string name = Console.ReadLine();
+            var name = InputHelper.PromptForValidString("Enter product name to search: ");
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Invalid product name.");
+                return;
+            }
 
             var product = FindProductByName(name);
             if (product == null)
@@ -104,8 +110,12 @@ namespace InventoryManagementSystem
 
         public void DeleteProduct()
         {
-            Console.Write("Enter product name to delete: ");
-            string name = Console.ReadLine();
+            var name = InputHelper.PromptForValidString("Enter product name to delete: ");
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Invalid product name.");
+                return;
+            }
 
             if (!products.Remove(name))
             {
@@ -114,6 +124,22 @@ namespace InventoryManagementSystem
             }
 
             Console.WriteLine("Product deleted successfully.");
+        }
+
+        public void ViewProducts()
+        {
+            if (products.Count == 0)
+            {
+                Console.WriteLine("Inventory is empty.");
+                return;
+            }
+
+            Console.WriteLine("All Products:");
+            int index = 1;
+            foreach (var product in products.Values)
+            {
+                Console.WriteLine($"{index++}. {product}");
+            }
         }
     }
 }
